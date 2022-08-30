@@ -3,6 +3,8 @@ package com.example.xmtestapp.data.di
 import com.example.xmtestapp.data.api.ApiClient
 import com.example.xmtestapp.data.api.ApiInterface
 import com.example.xmtestapp.data.api.RetrofitClient
+import com.example.xmtestapp.logic.GetQuestionsUseCase
+import com.example.xmtestapp.logic.SubmitAnswerUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +27,19 @@ class DiModule {
     @Provides
     fun provideRetrofitClient(): RetrofitClient {
         return RetrofitClient()
+    }
+
+    @Provides
+    fun provideGetQuestionsUseCase(
+        apiClient: ApiClient
+    ): GetQuestionsUseCase {
+        return GetQuestionsUseCase(apiClient)
+    }
+
+    @Provides
+    fun provideSubmitAnswerUseCase(
+        apiClient: ApiClient
+    ): SubmitAnswerUseCase {
+        return SubmitAnswerUseCase(apiClient)
     }
 }

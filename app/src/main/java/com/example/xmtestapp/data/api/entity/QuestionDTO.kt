@@ -1,4 +1,4 @@
-package com.example.xmtestapp.data.api
+package com.example.xmtestapp.data.api.entity
 
 import com.google.gson.annotations.SerializedName
 

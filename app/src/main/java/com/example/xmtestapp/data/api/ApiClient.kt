@@ -1,5 +1,6 @@
 package com.example.xmtestapp.data.api
 
+import com.example.xmtestapp.data.api.entity.QuestionDTO
 import javax.inject.Inject
 
 class ApiClient @Inject constructor(
