@@ -17,9 +17,12 @@ class SurveyViewModel @Inject constructor(
 
     val questionsLiveData = MutableLiveData<List<QuestionEntity>>()
 
+    var totalQuestions: Int = 0
+
     fun getQuestionsFromRepo() {
         viewModelScope.launch(Dispatchers.IO) {
             val questions = getQuestionsUseCase.getQuestionsFromRepo()
+            totalQuestions = questions.size
             questionsLiveData.postValue(questions)
         }
     }

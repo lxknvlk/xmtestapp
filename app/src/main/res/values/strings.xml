@@ -6,4 +6,7 @@
     <string name="questions_loaded">Questions loaded!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="question">Question</string>
 </resources>
