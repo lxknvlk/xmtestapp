@@ -37,11 +37,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.loadingLiveData.observe(this) { isLoading ->
-            if (isLoading){
-                showLoading()
-            } else {
-                hideLoading()
-            }
+            piLoader.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
         }
 
         viewModel.questionsLiveData.observe(this) { questionsList ->
@@ -54,14 +50,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.fetchQuestions()
-    }
-
-    private fun hideLoading() {
-        piLoader.visibility = View.INVISIBLE
-    }
-
-    private fun showLoading() {
-        piLoader.visibility = View.VISIBLE
     }
 
     private fun showError(msg: String) {
