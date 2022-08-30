@@ -11,4 +11,6 @@
     <string name="question">Question</string>
     <string name="answer_hint">Type your answer here</string>
     <string name="submit">Submit</string>
+    <string name="answer_submitted">Success - answer submitted!</string>
+    <string name="answer_submit_error">Failure to submit answer!</string>
 </resources>

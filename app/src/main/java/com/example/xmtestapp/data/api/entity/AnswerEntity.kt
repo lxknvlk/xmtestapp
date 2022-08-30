@@ -12,7 +12,7 @@ data class AnswerEntity(
     @SerializedName("id")
     val id: Int,
 
-    @ColumnInfo(name = "question")
-    @SerializedName("question")
+    @ColumnInfo(name = "answer")
+    @SerializedName("answer")
     val answer: String
 )

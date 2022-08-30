@@ -39,6 +39,11 @@ class QuestionFragment : Fragment() {
 
         tvQuestion.text = question
 
+        btnSubmit.setOnClickListener {
+            val text = etAnswer.text.toString().trim()
+            (activity as SurveyActivity).submitAnswer(id = qId, answer = text)
+        }
+
         return view
     }
 

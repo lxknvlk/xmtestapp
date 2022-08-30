@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.LinearLayout
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.xmtestapp.R
 import com.example.xmtestapp.data.api.entity.QuestionEntity
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -16,6 +19,7 @@ class SurveyActivity : AppCompatActivity() {
     private var barMenu: Menu? = null
     private lateinit var vpPager: ViewPager2
     private lateinit var questionPagerAdapter: QuestionPagerAdapter
+    private lateinit var llRoot: LinearLayout
 
     private val viewModel: SurveyViewModel by viewModels()
 
@@ -26,12 +30,7 @@ class SurveyActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         vpPager = findViewById(R.id.vpPager)
-
-        viewModel.questionsLiveData.observe(this) { questionsList ->
-            questionPagerAdapter = QuestionPagerAdapter(this, questionsList)
-            vpPager.adapter = questionPagerAdapter
-            setQuestionNumber(1)
-        }
+        llRoot = findViewById(R.id.llRoot)
 
         vpPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -41,7 +40,28 @@ class SurveyActivity : AppCompatActivity() {
             }
         })
 
+        initObservers()
+
         viewModel.getQuestionsFromRepo()
+    }
+
+    private fun initObservers() {
+        viewModel.questionsLiveData.observe(this) { questionsList ->
+            questionPagerAdapter = QuestionPagerAdapter(this, questionsList)
+            vpPager.adapter = questionPagerAdapter
+            setQuestionNumber(1)
+        }
+
+        viewModel.answeredQuestionsLiveData.observe(this) { answeredQuestions ->
+
+        }
+
+        viewModel.submitAnswerStateLiveData.observe(this) { submitAnswerState ->
+            when (submitAnswerState) {
+                SubmitAnswerState.STATE_SUCCESS -> showSuccess(getString(R.string.answer_submitted))
+                SubmitAnswerState.STATE_ERROR -> showError(getString(R.string.answer_submit_error))
+            }
+        }
     }
 
     private fun toggleMenuButtons(position: Int) {
@@ -52,6 +72,10 @@ class SurveyActivity : AppCompatActivity() {
             0 -> barMenu?.findItem(R.id.action_previous)?.isEnabled = false
             viewModel.totalQuestions - 1 -> barMenu?.findItem(R.id.action_next)?.isEnabled = false
         }
+    }
+
+    fun submitAnswer(id: Int, answer: String){
+        viewModel.submitAnswer(id, answer)
     }
 
     fun setQuestionNumber(currentPage: Int){
@@ -83,5 +107,15 @@ class SurveyActivity : AppCompatActivity() {
 
             else -> false
         }
+    }
+
+    private fun showError(msg: String) {
+        Snackbar.make(llRoot, msg, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(ContextCompat.getColor(this, R.color.error_red)).show()
+    }
+
+    private fun showSuccess(msg: String) {
+        Snackbar.make(llRoot, msg, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(ContextCompat.getColor(this, R.color.success_green)).show()
     }
 }

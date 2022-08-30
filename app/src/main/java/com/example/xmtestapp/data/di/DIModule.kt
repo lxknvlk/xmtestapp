@@ -63,8 +63,9 @@ class DiModule {
 
     @Provides
     fun provideSubmitAnswerUseCase(
-        apiClient: ApiClient
+        apiClient: ApiClient,
+        answerRepository: AnswerRepository
     ): SubmitAnswerUseCase {
-        return SubmitAnswerUseCase(apiClient)
+        return SubmitAnswerUseCase(apiClient, answerRepository)
     }
 }
