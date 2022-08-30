@@ -1,12 +1,10 @@
 package com.example.xmtestapp.data.api
 
-import retrofit2.Response
+import javax.inject.Inject
 
-class ApiClient {
-
-    private val apiInterface: ApiInterface =
-        RetrofitClient().getInstance().create(ApiInterface::class.java)
-
+class ApiClient @Inject constructor(
+    private val apiInterface: ApiInterface
+) {
     suspend fun getQuestions(): List<QuestionDTO>? {
         val response = apiInterface.getQuestions()
 
