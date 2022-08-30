@@ -10,8 +10,8 @@ import com.example.xmtestapp.data.api.entity.QuestionEntity
 import com.example.xmtestapp.view.QuestionFragment
 
 class QuestionPagerAdapter(
-    val fragmentActivity: FragmentActivity,
-    val questionList: MutableList<QuestionEntity>
+    private val fragmentActivity: FragmentActivity,
+    private val questionList: MutableList<QuestionEntity>
 ) :
     FragmentStateAdapter(fragmentActivity) {
     override fun getItemCount(): Int {
@@ -36,14 +36,6 @@ class QuestionPagerAdapter(
         }
     }
 
-    override fun getItemId(position: Int): Long {
-        return questionList[position].id.toLong()
-    }
-
-    override fun containsItem(itemId: Long): Boolean {
-        return questionList.any { it.id.toLong() == itemId }
-    }
-
     override fun createFragment(position: Int): Fragment {
         val questionEntity = questionList[position]
         return QuestionFragment.newInstance(questionEntity)
@@ -62,7 +54,6 @@ fun ViewPager2.nextPage(smoothScroll: Boolean = true): Boolean {
         setCurrentItem(currentItem + 1, smoothScroll)
         return true
     }
-    //can't move to next page, maybe current page is last or adapter not set.
     return false
 }
 
@@ -71,6 +62,5 @@ fun ViewPager2.previousPage(smoothScroll: Boolean = true): Boolean {
         setCurrentItem(currentItem - 1, smoothScroll)
         return true
     }
-    //can't move to previous page, maybe current page is first or adapter not set.
     return false
 }

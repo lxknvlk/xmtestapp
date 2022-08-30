@@ -3,14 +3,13 @@ package com.example.xmtestapp.view
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import com.example.xmtestapp.R
 import com.example.xmtestapp.data.api.entity.QuestionEntity
 
@@ -29,7 +28,7 @@ class QuestionFragment : Fragment() {
     private var question: String? = null
     private var answer: String? = null
 
-    fun setNewData(questionEntity: QuestionEntity){
+    fun setNewData(questionEntity: QuestionEntity) {
         if (questionEntity.answer != null) {
             answer = questionEntity.answer
             btnSubmit.isEnabled = false
@@ -70,7 +69,7 @@ class QuestionFragment : Fragment() {
             (activity as SurveyActivity).submitAnswer(id = qId, answer = text)
         }
 
-        etAnswer.addTextChangedListener(object: TextWatcher{
+        etAnswer.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
@@ -80,11 +79,21 @@ class QuestionFragment : Fragment() {
             }
         })
 
+        etAnswer.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                view.postDelayed({
+                    if (!view.hasFocus()) {
+                        view.requestFocus();
+                    }
+                }, 200)
+            }
+        }
+
         return view
     }
 
     companion object {
-        fun newInstance(questionEntity: QuestionEntity): QuestionFragment{
+        fun newInstance(questionEntity: QuestionEntity): QuestionFragment {
             val fragment = QuestionFragment()
             val args = Bundle()
             args.putInt(ARG_ID, questionEntity.id)
