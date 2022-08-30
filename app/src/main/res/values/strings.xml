@@ -9,4 +9,6 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="question">Question</string>
+    <string name="answer_hint">Type your answer here</string>
+    <string name="submit">Submit</string>
 </resources>

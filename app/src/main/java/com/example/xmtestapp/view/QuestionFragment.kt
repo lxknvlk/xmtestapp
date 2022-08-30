@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import com.example.xmtestapp.R
 import com.example.xmtestapp.data.api.entity.QuestionEntity
@@ -32,6 +34,8 @@ class QuestionFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_question, container, false)
 
         val tvQuestion = view.findViewById<TextView>(R.id.tvQuestion)
+        val etAnswer = view.findViewById<EditText>(R.id.etAnswer)
+        val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
 
         tvQuestion.text = question
 

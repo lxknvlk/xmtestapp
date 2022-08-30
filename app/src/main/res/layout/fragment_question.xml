@@ -15,6 +15,22 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:id="@+id/tvQuestion"
-        android:text="question here" />
+        android:text="@string/question" />
+
+    <EditText
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etAnswer"
+        android:hint="@string/answer_hint"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/btnSubmit"
+        android:text="@string/submit"
+        />
 
 </LinearLayout>

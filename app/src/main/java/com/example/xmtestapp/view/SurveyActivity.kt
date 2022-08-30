@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SurveyActivity : AppCompatActivity() {
 
+    private var barMenu: Menu? = null
     private lateinit var vpPager: ViewPager2
     private lateinit var questionPagerAdapter: QuestionPagerAdapter
 
@@ -35,11 +36,22 @@ class SurveyActivity : AppCompatActivity() {
         vpPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 setQuestionNumber(position + 1)
+                toggleMenuButtons(position)
                 super.onPageSelected(position)
             }
         })
 
         viewModel.getQuestionsFromRepo()
+    }
+
+    private fun toggleMenuButtons(position: Int) {
+        barMenu?.findItem(R.id.action_previous)?.isEnabled = true
+        barMenu?.findItem(R.id.action_next)?.isEnabled = true
+
+        when (position) {
+            0 -> barMenu?.findItem(R.id.action_previous)?.isEnabled = false
+            viewModel.totalQuestions - 1 -> barMenu?.findItem(R.id.action_next)?.isEnabled = false
+        }
     }
 
     fun setQuestionNumber(currentPage: Int){
@@ -48,7 +60,8 @@ class SurveyActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.survey_bar_menu, menu);
+        menuInflater.inflate(R.menu.survey_bar_menu, menu)
+        barMenu = menu
         return true
     }
 
