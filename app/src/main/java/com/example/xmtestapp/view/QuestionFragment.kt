@@ -16,17 +16,20 @@ import com.example.xmtestapp.data.api.entity.QuestionEntity
 
 private const val ARG_ID = "ARG_ID"
 private const val ARG_QUESTION = "ARG_QUESTION"
+private const val ARG_ANSWER = "ARG_ANSWER"
 
 
 class QuestionFragment : Fragment() {
     private var qId: Int = 0
     private var question: String? = null
+    private var answer: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             qId = it.getInt(ARG_ID)
             question = it.getString(ARG_QUESTION)
+            answer = it.getString(ARG_ANSWER)
         }
     }
 
@@ -41,6 +44,12 @@ class QuestionFragment : Fragment() {
         val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
 
         tvQuestion.text = question
+
+        answer?.let {
+            btnSubmit.isEnabled = false
+            etAnswer.setText(answer)
+            etAnswer.isEnabled = false
+        }
 
         btnSubmit.setOnClickListener {
             val text = etAnswer.text.toString().trim()
@@ -66,6 +75,7 @@ class QuestionFragment : Fragment() {
             val args = Bundle()
             args.putInt(ARG_ID, questionEntity.id)
             args.putString(ARG_QUESTION, questionEntity.question)
+            args.putString(ARG_ANSWER, questionEntity.answer)
             fragment.arguments = args
 
             return fragment
