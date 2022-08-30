@@ -5,9 +5,9 @@ import androidx.room.Room
 import com.example.xmtestapp.data.api.ApiClient
 import com.example.xmtestapp.data.api.ApiInterface
 import com.example.xmtestapp.data.api.RetrofitClient
-import com.example.xmtestapp.data.api.db.AppDatabase
-import com.example.xmtestapp.data.api.repository.AnswerRepository
-import com.example.xmtestapp.data.api.repository.QuestionRepository
+import com.example.xmtestapp.data.db.AppDatabase
+import com.example.xmtestapp.data.db.repository.AnswerRepository
+import com.example.xmtestapp.data.db.repository.QuestionRepository
 import com.example.xmtestapp.logic.GetQuestionsUseCase
 import com.example.xmtestapp.logic.SubmitAnswerUseCase
 import dagger.Module

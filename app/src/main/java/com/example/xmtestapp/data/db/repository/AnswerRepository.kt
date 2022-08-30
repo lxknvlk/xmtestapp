@@ -1,6 +1,6 @@
-package com.example.xmtestapp.data.api.repository
+package com.example.xmtestapp.data.db.repository
 
-import com.example.xmtestapp.data.api.dao.AnswerDAO
+import com.example.xmtestapp.data.db.dao.AnswerDAO
 import com.example.xmtestapp.data.api.entity.AnswerEntity
 import javax.inject.Inject
 

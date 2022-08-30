@@ -1,4 +1,4 @@
-package com.example.xmtestapp.data.api.dao
+package com.example.xmtestapp.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
