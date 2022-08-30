@@ -8,6 +8,13 @@
     android:orientation="vertical"
     tools:context=".view.SurveyActivity">
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/piLoader"
+        android:visibility="invisible"
+        android:indeterminate="true" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

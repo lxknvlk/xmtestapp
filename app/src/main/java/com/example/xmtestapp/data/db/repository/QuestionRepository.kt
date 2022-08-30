@@ -14,4 +14,8 @@ class QuestionRepository @Inject constructor(
     fun insertAll(questionsList: List<QuestionEntity>) {
         questionDAO.insertAll(questionsList)
     }
+
+    fun updateAnswer(id: Int, answer: String){
+        questionDAO.update(id, answer)
+    }
 }

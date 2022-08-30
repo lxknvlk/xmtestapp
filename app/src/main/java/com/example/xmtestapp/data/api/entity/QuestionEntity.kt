@@ -15,5 +15,8 @@ data class QuestionEntity(
 
     @ColumnInfo(name = "question")
     @SerializedName("question")
-    val question: String
+    val question: String,
+
+    @ColumnInfo(name = "answer")
+    val answer: String?
 )

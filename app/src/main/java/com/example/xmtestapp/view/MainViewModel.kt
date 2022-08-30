@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xmtestapp.data.api.entity.QuestionEntity
-import com.example.xmtestapp.logic.GetQuestionsUseCase
+import com.example.xmtestapp.logic.SurveyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getQuestionsUseCase: GetQuestionsUseCase
+    private val surveyUseCase: SurveyUseCase
 ) : ViewModel() {
 
     val loadingLiveData = MutableLiveData<Boolean>(false)
@@ -21,7 +21,7 @@ class MainViewModel @Inject constructor(
     fun fetchQuestions() {
         loadingLiveData.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
-            val questions = getQuestionsUseCase.getQuestionsFromBackend()
+            val questions = surveyUseCase.getQuestionsFromBackend()
             loadingLiveData.postValue(false)
             questionsLiveData.postValue(questions)
         }

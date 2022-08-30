@@ -6,10 +6,8 @@ import com.example.xmtestapp.data.api.ApiClient
 import com.example.xmtestapp.data.api.ApiInterface
 import com.example.xmtestapp.data.api.RetrofitClient
 import com.example.xmtestapp.data.db.AppDatabase
-import com.example.xmtestapp.data.db.repository.AnswerRepository
 import com.example.xmtestapp.data.db.repository.QuestionRepository
-import com.example.xmtestapp.logic.GetQuestionsUseCase
-import com.example.xmtestapp.logic.SubmitAnswerUseCase
+import com.example.xmtestapp.logic.SurveyUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,11 +39,6 @@ class DiModule {
     }
 
     @Provides
-    fun provideAnswerRepository(appDatabase: AppDatabase): AnswerRepository {
-        return AnswerRepository(appDatabase.answerDao())
-    }
-
-    @Provides
     fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase {
         return Room.databaseBuilder(
             appContext,
@@ -57,15 +50,7 @@ class DiModule {
     fun provideGetQuestionsUseCase(
         apiClient: ApiClient,
         questionRepository: QuestionRepository
-    ): GetQuestionsUseCase {
-        return GetQuestionsUseCase(apiClient, questionRepository)
-    }
-
-    @Provides
-    fun provideSubmitAnswerUseCase(
-        apiClient: ApiClient,
-        answerRepository: AnswerRepository
-    ): SubmitAnswerUseCase {
-        return SubmitAnswerUseCase(apiClient, answerRepository)
+    ): SurveyUseCase {
+        return SurveyUseCase(apiClient, questionRepository)
     }
 }

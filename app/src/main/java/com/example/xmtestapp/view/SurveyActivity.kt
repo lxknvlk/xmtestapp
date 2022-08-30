@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -11,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.xmtestapp.R
 import com.example.xmtestapp.data.api.entity.QuestionEntity
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +24,7 @@ class SurveyActivity : AppCompatActivity() {
     private lateinit var questionPagerAdapter: QuestionPagerAdapter
     private lateinit var llRoot: LinearLayout
     private lateinit var tvQuestionsSubmitted: TextView
+    private lateinit var piLoader: LinearProgressIndicator
 
     private val viewModel: SurveyViewModel by viewModels()
 
@@ -34,6 +37,7 @@ class SurveyActivity : AppCompatActivity() {
         vpPager = findViewById(R.id.vpPager)
         tvQuestionsSubmitted = findViewById(R.id.tvQuestionsSubmitted)
         llRoot = findViewById(R.id.llRoot)
+        piLoader = findViewById(R.id.piLoader)
 
         vpPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -45,7 +49,7 @@ class SurveyActivity : AppCompatActivity() {
 
         initObservers()
 
-        viewModel.getQuestionsFromRepo()
+        viewModel.refreshQuestions()
     }
 
     private fun initObservers() {
@@ -53,10 +57,8 @@ class SurveyActivity : AppCompatActivity() {
             questionPagerAdapter = QuestionPagerAdapter(this, questionsList)
             vpPager.adapter = questionPagerAdapter
             setQuestionNumber(1)
-        }
 
-        viewModel.answeredQuestionsLiveData.observe(this) { answeredQuestions ->
-            tvQuestionsSubmitted.text = "${getString(R.string.questions_submitted)} ${answeredQuestions.size}"
+            checkAnsweredQuestions(questionsList)
         }
 
         viewModel.submitAnswerStateLiveData.observe(this) { submitAnswerState ->
@@ -65,6 +67,16 @@ class SurveyActivity : AppCompatActivity() {
                 SubmitAnswerState.STATE_ERROR -> showError(getString(R.string.answer_submit_error))
             }
         }
+
+        viewModel.loadingLiveData.observe(this) { isLoading ->
+            piLoader.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
+        }
+    }
+
+    private fun checkAnsweredQuestions(questionsList: List<QuestionEntity>) {
+        val answeredQuestions = questionsList.filter { it.answer != null }
+        tvQuestionsSubmitted.text = "${getString(R.string.questions_submitted)} ${answeredQuestions.size}"
+
     }
 
     private fun toggleMenuButtons(position: Int) {

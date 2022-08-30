@@ -13,4 +13,7 @@ interface QuestionDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(questions: List<QuestionEntity>)
+
+    @Query("UPDATE question SET answer = :answer WHERE id = :id")
+    fun update(id: Int, answer: String)
 }

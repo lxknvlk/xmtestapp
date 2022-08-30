@@ -1,11 +1,12 @@
 package com.example.xmtestapp.logic
 
 import com.example.xmtestapp.data.api.ApiClient
+import com.example.xmtestapp.data.api.entity.AnswerEntity
 import com.example.xmtestapp.data.api.entity.QuestionEntity
 import com.example.xmtestapp.data.db.repository.QuestionRepository
 import javax.inject.Inject
 
-class GetQuestionsUseCase @Inject constructor(
+class SurveyUseCase @Inject constructor(
     private val apiClient: ApiClient,
     private val questionRepository: QuestionRepository
 ) {
@@ -17,6 +18,17 @@ class GetQuestionsUseCase @Inject constructor(
         }
 
         return questions
+    }
+
+    suspend fun submitAnswer(id: Int, answer: String): Boolean{
+        val answerEntity = AnswerEntity(id, answer)
+        val success = apiClient.submitAnswer(answerEntity)
+
+        if (success){
+            questionRepository.updateAnswer(id, answer)
+        }
+
+        return success
     }
 
     suspend fun getQuestionsFromRepo(): List<QuestionEntity>{

@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xmtestapp.data.api.entity.AnswerEntity
 import com.example.xmtestapp.data.api.entity.QuestionEntity
-import com.example.xmtestapp.logic.GetQuestionsUseCase
-import com.example.xmtestapp.logic.SubmitAnswerUseCase
+import com.example.xmtestapp.logic.SurveyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,41 +19,36 @@ enum class SubmitAnswerState {
 
 @HiltViewModel
 class SurveyViewModel @Inject constructor(
-    private val getQuestionsUseCase: GetQuestionsUseCase,
-    private val submitAnswerUseCase: SubmitAnswerUseCase
+    private val surveyUseCase: SurveyUseCase,
 ) : ViewModel() {
 
     val questionsLiveData = MutableLiveData<List<QuestionEntity>>()
-    val answeredQuestionsLiveData = MutableLiveData<List<AnswerEntity>>()
+    val loadingLiveData = MutableLiveData<Boolean>(false)
     val submitAnswerStateLiveData = MutableLiveData<SubmitAnswerState>(SubmitAnswerState.STATE_DEFAULT)
 
     var totalQuestions: Int = 0
 
-    fun getQuestionsFromRepo() {
+    fun refreshQuestions() {
         viewModelScope.launch(Dispatchers.IO) {
-            val questions = getQuestionsUseCase.getQuestionsFromRepo()
+            val questions = surveyUseCase.getQuestionsFromRepo()
             totalQuestions = questions.size
             questionsLiveData.postValue(questions)
         }
     }
 
     fun submitAnswer(id: Int, answer: String){
+        loadingLiveData.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
-            val success = submitAnswerUseCase.submitAnswer(id, answer)
+            val success = surveyUseCase.submitAnswer(id, answer)
 
             if (success) {
-                refreshAnsweredQuestions()
+                refreshQuestions()
                 submitAnswerStateLiveData.postValue(SubmitAnswerState.STATE_SUCCESS)
             } else {
                 submitAnswerStateLiveData.postValue(SubmitAnswerState.STATE_ERROR)
             }
-        }
-    }
 
-    private fun refreshAnsweredQuestions(){
-        viewModelScope.launch(Dispatchers.IO) {
-            val answeredQuestions = submitAnswerUseCase.getAnsweredQuestions()
-            answeredQuestionsLiveData.postValue(answeredQuestions)
+            loadingLiveData.postValue(false)
         }
     }
 }
