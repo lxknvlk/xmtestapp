@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -20,6 +21,7 @@ class SurveyActivity : AppCompatActivity() {
     private lateinit var vpPager: ViewPager2
     private lateinit var questionPagerAdapter: QuestionPagerAdapter
     private lateinit var llRoot: LinearLayout
+    private lateinit var tvQuestionsSubmitted: TextView
 
     private val viewModel: SurveyViewModel by viewModels()
 
@@ -30,6 +32,7 @@ class SurveyActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         vpPager = findViewById(R.id.vpPager)
+        tvQuestionsSubmitted = findViewById(R.id.tvQuestionsSubmitted)
         llRoot = findViewById(R.id.llRoot)
 
         vpPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
@@ -53,7 +56,7 @@ class SurveyActivity : AppCompatActivity() {
         }
 
         viewModel.answeredQuestionsLiveData.observe(this) { answeredQuestions ->
-
+            tvQuestionsSubmitted.text = "${getString(R.string.questions_submitted)} ${answeredQuestions.size}"
         }
 
         viewModel.submitAnswerStateLiveData.observe(this) { submitAnswerState ->

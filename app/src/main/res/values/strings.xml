@@ -13,4 +13,5 @@
     <string name="submit">Submit</string>
     <string name="answer_submitted">Success - answer submitted!</string>
     <string name="answer_submit_error">Failure to submit answer!</string>
+    <string name="questions_submitted">Questions submitted:</string>
 </resources>

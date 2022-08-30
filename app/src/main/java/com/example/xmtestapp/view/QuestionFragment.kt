@@ -1,6 +1,8 @@
 package com.example.xmtestapp.view
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import com.example.xmtestapp.R
 import com.example.xmtestapp.data.api.entity.QuestionEntity
 
@@ -43,6 +46,16 @@ class QuestionFragment : Fragment() {
             val text = etAnswer.text.toString().trim()
             (activity as SurveyActivity).submitAnswer(id = qId, answer = text)
         }
+
+        etAnswer.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                val text = s.toString()
+
+                btnSubmit.isEnabled = !text.isEmpty()
+            }
+        })
 
         return view
     }
