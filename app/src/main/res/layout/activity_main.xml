@@ -6,8 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/llRoot"
     android:gravity="center_horizontal"
     tools:context=".view.MainActivity">
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/piLoader"
+        android:visibility="invisible"
+        android:indeterminate="true" />
 
     <TextView
         android:id="@+id/textView"
@@ -20,6 +28,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:layout_marginTop="100dp"
         android:text="@string/start_survey"
         android:id="@+id/btnStart"
