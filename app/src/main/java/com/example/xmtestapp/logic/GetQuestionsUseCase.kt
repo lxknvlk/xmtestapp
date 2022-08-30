@@ -9,7 +9,7 @@ class GetQuestionsUseCase @Inject constructor(
     private val apiClient: ApiClient,
     private val questionRepository: QuestionRepository
 ) {
-    suspend fun getQuestions(): List<QuestionEntity>?{
+    suspend fun getQuestionsFromBackend(): List<QuestionEntity>?{
         val questions:  List<QuestionEntity>? = apiClient.getQuestions()
 
         questions?.let {
@@ -17,5 +17,9 @@ class GetQuestionsUseCase @Inject constructor(
         }
 
         return questions
+    }
+
+    suspend fun getQuestionsFromRepo(): List<QuestionEntity>{
+        return questionRepository.getAll()
     }
 }

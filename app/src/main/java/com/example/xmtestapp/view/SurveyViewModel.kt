@@ -11,18 +11,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class SurveyViewModel @Inject constructor(
     private val getQuestionsUseCase: GetQuestionsUseCase
 ) : ViewModel() {
 
-    val loadingLiveData = MutableLiveData<Boolean>(false)
-    val questionsLiveData = MutableLiveData<List<QuestionEntity>?>()
+    val questionsLiveData = MutableLiveData<List<QuestionEntity>>()
 
-    fun fetchQuestions() {
-        loadingLiveData.postValue(true)
+    fun getQuestionsFromRepo() {
         viewModelScope.launch(Dispatchers.IO) {
-            val questions = getQuestionsUseCase.getQuestionsFromBackend()
-            loadingLiveData.postValue(false)
+            val questions = getQuestionsUseCase.getQuestionsFromRepo()
             questionsLiveData.postValue(questions)
         }
     }
