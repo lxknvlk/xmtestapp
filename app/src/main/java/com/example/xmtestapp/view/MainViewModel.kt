@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xmtestapp.logic.GetQuestionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,7 +17,7 @@ class MainViewModel @Inject constructor(
     val successLiveData = MutableLiveData<Any?>(false)
 
     fun fetchQuestions() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val questions = getQuestionsUseCase.getQuestions()
             successLiveData.postValue(questions)
         }

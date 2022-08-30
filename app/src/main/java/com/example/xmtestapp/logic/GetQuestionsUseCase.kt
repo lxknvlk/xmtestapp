@@ -1,14 +1,20 @@
 package com.example.xmtestapp.logic
 
 import com.example.xmtestapp.data.api.ApiClient
-import com.example.xmtestapp.data.api.entity.QuestionDTO
+import com.example.xmtestapp.data.api.entity.QuestionEntity
+import com.example.xmtestapp.data.api.repository.QuestionRepository
 import javax.inject.Inject
 
 class GetQuestionsUseCase @Inject constructor(
-    private val apiClient: ApiClient
+    private val apiClient: ApiClient,
+    private val questionRepository: QuestionRepository
 ) {
-    suspend fun getQuestions(): List<QuestionDTO>?{
-        val questions:  List<QuestionDTO>? = apiClient.getQuestions()
+    suspend fun getQuestions(): List<QuestionEntity>?{
+        val questions:  List<QuestionEntity>? = apiClient.getQuestions()
+
+        questions?.let {
+            questionRepository.insertAll(questions)
+        }
 
         return questions
     }
