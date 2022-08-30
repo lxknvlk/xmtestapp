@@ -1,6 +1,5 @@
 package com.example.xmtestapp.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -8,10 +7,14 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.xmtestapp.R
 import com.example.xmtestapp.data.api.entity.QuestionEntity
+import com.example.xmtestapp.view.adapter.QuestionPagerAdapter
+import com.example.xmtestapp.view.adapter.nextPage
+import com.example.xmtestapp.view.adapter.previousPage
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,8 +23,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class SurveyActivity : AppCompatActivity() {
 
     private var barMenu: Menu? = null
+    private var questionPagerAdapter: QuestionPagerAdapter? = null
+
     private lateinit var vpPager: ViewPager2
-    private lateinit var questionPagerAdapter: QuestionPagerAdapter
     private lateinit var llRoot: LinearLayout
     private lateinit var tvQuestionsSubmitted: TextView
     private lateinit var piLoader: LinearProgressIndicator
@@ -39,7 +43,7 @@ class SurveyActivity : AppCompatActivity() {
         llRoot = findViewById(R.id.llRoot)
         piLoader = findViewById(R.id.piLoader)
 
-        vpPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+        vpPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 setQuestionNumber(position + 1)
                 toggleMenuButtons(position)
@@ -54,11 +58,7 @@ class SurveyActivity : AppCompatActivity() {
 
     private fun initObservers() {
         viewModel.questionsLiveData.observe(this) { questionsList ->
-            questionPagerAdapter = QuestionPagerAdapter(this, questionsList)
-            vpPager.adapter = questionPagerAdapter
-            setQuestionNumber(1)
-
-            checkAnsweredQuestions(questionsList)
+            questionsList?.let { refreshQuestionsList(questionsList) }
         }
 
         viewModel.submitAnswerStateLiveData.observe(this) { submitAnswerState ->
@@ -73,9 +73,22 @@ class SurveyActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkAnsweredQuestions(questionsList: List<QuestionEntity>) {
+    private fun refreshQuestionsList(questionsList: List<QuestionEntity>) {
+        if (questionPagerAdapter == null){
+            questionPagerAdapter = QuestionPagerAdapter(this, questionsList.toMutableList())
+            vpPager.adapter = questionPagerAdapter
+            setQuestionNumber(1)
+        } else {
+            questionPagerAdapter?.updateQuestions(questionsList)
+        }
+
+        setAnsweredQuestionsNumber(questionsList)
+    }
+
+    private fun setAnsweredQuestionsNumber(questionsList: List<QuestionEntity>) {
         val answeredQuestions = questionsList.filter { it.answer != null }
-        tvQuestionsSubmitted.text = "${getString(R.string.questions_submitted)} ${answeredQuestions.size}"
+        tvQuestionsSubmitted.text =
+            "${getString(R.string.questions_submitted)} ${answeredQuestions.size}"
 
     }
 
@@ -89,11 +102,11 @@ class SurveyActivity : AppCompatActivity() {
         }
     }
 
-    fun submitAnswer(id: Int, answer: String){
+    fun submitAnswer(id: Int, answer: String) {
         viewModel.submitAnswer(id, answer)
     }
 
-    fun setQuestionNumber(currentPage: Int){
+    fun setQuestionNumber(currentPage: Int) {
         val text = "${getString(R.string.question)} $currentPage/${viewModel.totalQuestions}"
         supportActionBar?.title = text
     }

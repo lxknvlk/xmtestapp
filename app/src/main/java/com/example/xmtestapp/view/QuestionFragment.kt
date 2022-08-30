@@ -20,9 +20,23 @@ private const val ARG_ANSWER = "ARG_ANSWER"
 
 
 class QuestionFragment : Fragment() {
+    private lateinit var btnSubmit: Button
+    private lateinit var etAnswer: EditText
+    private lateinit var tvQuestion: TextView
+
+
     private var qId: Int = 0
     private var question: String? = null
     private var answer: String? = null
+
+    fun setNewData(questionEntity: QuestionEntity){
+        if (questionEntity.answer != null) {
+            answer = questionEntity.answer
+            btnSubmit.isEnabled = false
+            etAnswer.setText(answer)
+            etAnswer.isEnabled = false
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,13 +53,13 @@ class QuestionFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_question, container, false)
 
-        val tvQuestion = view.findViewById<TextView>(R.id.tvQuestion)
-        val etAnswer = view.findViewById<EditText>(R.id.etAnswer)
-        val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
+        tvQuestion = view.findViewById<TextView>(R.id.tvQuestion)
+        etAnswer = view.findViewById<EditText>(R.id.etAnswer)
+        btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
 
         tvQuestion.text = question
 
-        answer?.let {
+        if (answer != null) {
             btnSubmit.isEnabled = false
             etAnswer.setText(answer)
             etAnswer.isEnabled = false
@@ -62,7 +76,7 @@ class QuestionFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 val text = s.toString()
 
-                btnSubmit.isEnabled = !text.isEmpty()
+                if (answer == null) btnSubmit.isEnabled = text.isNotEmpty()
             }
         })
 
