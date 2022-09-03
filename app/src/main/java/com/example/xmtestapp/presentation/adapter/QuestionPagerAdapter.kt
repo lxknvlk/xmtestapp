@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.adapter.FragmentViewHolder
 import androidx.viewpager2.widget.ViewPager2
-import com.example.xmtestapp.data.api.entity.QuestionEntity
+import com.example.xmtestapp.domain.entity.Question
 import com.example.xmtestapp.presentation.QuestionFragment
 
 class QuestionPagerAdapter(
     private val fragmentActivity: FragmentActivity,
-    private val questionList: MutableList<QuestionEntity>
+    private val questionList: MutableList<Question>
 ) :
     FragmentStateAdapter(fragmentActivity) {
     override fun getItemCount(): Int {
@@ -41,7 +41,7 @@ class QuestionPagerAdapter(
         return QuestionFragment.newInstance(questionEntity)
     }
 
-    fun updateQuestions(updatedList: List<QuestionEntity>) {
+    fun updateQuestions(updatedList: List<Question>) {
         val diffResult = DiffUtil.calculateDiff(QuestionDiffUtil(questionList, updatedList))
         questionList.clear()
         questionList.addAll(updatedList)

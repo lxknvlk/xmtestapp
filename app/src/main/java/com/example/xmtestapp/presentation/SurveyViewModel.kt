@@ -3,9 +3,9 @@ package com.example.xmtestapp.presentation
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.xmtestapp.data.api.entity.QuestionEntity
-import com.example.xmtestapp.domain.GetQuestionsUseCase
-import com.example.xmtestapp.domain.SubmitAnswerUseCase
+import com.example.xmtestapp.domain.entity.Question
+import com.example.xmtestapp.domain.usecase.GetQuestionsUseCase
+import com.example.xmtestapp.domain.usecase.SubmitAnswerUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,9 +23,9 @@ class SurveyViewModel @Inject constructor(
     private val submitAnswerUseCase: SubmitAnswerUseCase
 ) : ViewModel() {
 
-    val questionsLiveData = MutableLiveData<List<QuestionEntity>>()
+    val questionsLiveData = MutableLiveData<List<Question>>()
     val loadingLiveData = MutableLiveData<Boolean>(false)
-    val submitAnswerStateLiveData = MutableLiveData<SubmitAnswerState>(SubmitAnswerState.STATE_DEFAULT)
+    val submitAnswerStateLiveData = MutableLiveData(SubmitAnswerState.STATE_DEFAULT)
 
     var totalQuestions: Int = 0
 
@@ -37,7 +37,7 @@ class SurveyViewModel @Inject constructor(
         }
     }
 
-    fun submitAnswer(id: Int, answer: String){
+    fun submitAnswer(id: Int, answer: String) {
         loadingLiveData.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             val success = submitAnswerUseCase.submitAnswer(id, answer)

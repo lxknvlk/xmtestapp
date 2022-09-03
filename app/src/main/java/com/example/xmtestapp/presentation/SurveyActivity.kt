@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.xmtestapp.R
-import com.example.xmtestapp.data.api.entity.QuestionEntity
+import com.example.xmtestapp.domain.entity.Question
 import com.example.xmtestapp.presentation.adapter.QuestionPagerAdapter
 import com.example.xmtestapp.presentation.adapter.nextPage
 import com.example.xmtestapp.presentation.adapter.previousPage
@@ -73,8 +73,8 @@ class SurveyActivity : AppCompatActivity() {
         }
     }
 
-    private fun refreshQuestionsList(questionsList: List<QuestionEntity>) {
-        if (questionPagerAdapter == null){
+    private fun refreshQuestionsList(questionsList: List<Question>) {
+        if (questionPagerAdapter == null) {
             questionPagerAdapter = QuestionPagerAdapter(this, questionsList.toMutableList())
             vpPager.adapter = questionPagerAdapter
             setQuestionNumber(1)
@@ -85,7 +85,7 @@ class SurveyActivity : AppCompatActivity() {
         setAnsweredQuestionsNumber(questionsList)
     }
 
-    private fun setAnsweredQuestionsNumber(questionsList: List<QuestionEntity>) {
+    private fun setAnsweredQuestionsNumber(questionsList: List<Question>) {
         val answeredQuestions = questionsList.filter { it.answer != null }
         tvQuestionsSubmitted.text =
             "${getString(R.string.questions_submitted)} ${answeredQuestions.size}"

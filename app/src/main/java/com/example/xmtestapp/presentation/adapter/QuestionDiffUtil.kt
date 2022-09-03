@@ -1,11 +1,11 @@
 package com.example.xmtestapp.presentation.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.xmtestapp.data.api.entity.QuestionEntity
+import com.example.xmtestapp.domain.entity.Question
 
 class QuestionDiffUtil(
-    private val oldList: List<QuestionEntity>,
-    private val newList: List<QuestionEntity>
+    private val oldList: List<Question>,
+    private val newList: List<Question>
 ) : DiffUtil.Callback() {
     enum class PayloadKey {
         EVERYTHING
@@ -31,7 +31,7 @@ class QuestionDiffUtil(
         return oldItem.question == newItem.question && oldItem.answer == newItem.answer
     }
 
-    override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+    override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any {
         return listOf(PayloadKey.EVERYTHING)
     }
 }

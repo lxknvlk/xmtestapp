@@ -3,9 +3,7 @@ package com.example.xmtestapp.presentation
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.xmtestapp.data.api.entity.QuestionEntity
-import com.example.xmtestapp.domain.DownloadQuestionsUseCase
-import com.example.xmtestapp.domain.GetQuestionsUseCase
+import com.example.xmtestapp.domain.usecase.DownloadQuestionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

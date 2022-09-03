@@ -8,9 +8,9 @@ import com.example.xmtestapp.data.api.RetrofitClient
 import com.example.xmtestapp.data.db.AppDatabase
 import com.example.xmtestapp.data.db.repository.QuestionRepositoryLocal
 import com.example.xmtestapp.data.db.repository.QuestionRepositoryRemote
-import com.example.xmtestapp.domain.DownloadQuestionsUseCase
-import com.example.xmtestapp.domain.GetQuestionsUseCase
-import com.example.xmtestapp.domain.SubmitAnswerUseCase
+import com.example.xmtestapp.domain.usecase.DownloadQuestionsUseCase
+import com.example.xmtestapp.domain.usecase.GetQuestionsUseCase
+import com.example.xmtestapp.domain.usecase.SubmitAnswerUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

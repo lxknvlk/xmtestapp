@@ -11,7 +11,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.xmtestapp.R
-import com.example.xmtestapp.data.api.entity.QuestionEntity
+import com.example.xmtestapp.domain.entity.Question
 
 private const val ARG_ID = "ARG_ID"
 private const val ARG_QUESTION = "ARG_QUESTION"
@@ -28,7 +28,7 @@ class QuestionFragment : Fragment() {
     private var question: String? = null
     private var answer: String? = null
 
-    fun setNewData(questionEntity: QuestionEntity) {
+    fun setNewData(questionEntity: Question) {
         if (questionEntity.answer != null) {
             answer = questionEntity.answer
             btnSubmit.isEnabled = false
@@ -93,7 +93,7 @@ class QuestionFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(questionEntity: QuestionEntity): QuestionFragment {
+        fun newInstance(questionEntity: Question): QuestionFragment {
             val fragment = QuestionFragment()
             val args = Bundle()
             args.putInt(ARG_ID, questionEntity.id)

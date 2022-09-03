@@ -1,8 +1,8 @@
-package com.example.xmtestapp.domain
+package com.example.xmtestapp.domain.usecase
 
-import com.example.xmtestapp.data.api.entity.QuestionEntity
 import com.example.xmtestapp.data.db.repository.QuestionRepositoryLocal
 import com.example.xmtestapp.data.db.repository.QuestionRepositoryRemote
+import com.example.xmtestapp.domain.entity.Question
 import javax.inject.Inject
 
 class DownloadQuestionsUseCase @Inject constructor(
@@ -11,13 +11,8 @@ class DownloadQuestionsUseCase @Inject constructor(
 ) {
 
     suspend fun downloadQuestions(): Boolean {
-        val questions: List<QuestionEntity>? = questionRepositoryRemote.getQuestions()
-
-        return if (questions != null && questions.isNotEmpty()) {
-            questionRepositoryLocal.insertAll(questions)
-            true
-        } else {
-            false
-        }
+        val questions: List<Question> = questionRepositoryRemote.getQuestions()
+        questionRepositoryLocal.insertAll(questions)
+        return questions.isNotEmpty()
     }
 }

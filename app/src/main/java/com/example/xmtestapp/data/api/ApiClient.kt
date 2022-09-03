@@ -7,7 +7,7 @@ import javax.inject.Inject
 class ApiClient @Inject constructor(
     private val apiInterface: ApiInterface
 ) {
-    suspend fun getQuestions(): List<QuestionEntity>? {
+    suspend fun getQuestions(): List<QuestionEntity> {
         try {
             val response = apiInterface.getQuestions()
 
@@ -18,7 +18,7 @@ class ApiClient @Inject constructor(
             e.printStackTrace()
         }
 
-        return null
+        return listOf()
     }
 
     suspend fun submitAnswer(answerEntity: AnswerEntity): Boolean {

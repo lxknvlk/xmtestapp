@@ -1,8 +1,9 @@
-package com.example.xmtestapp.domain
+package com.example.xmtestapp.domain.usecase
 
 import com.example.xmtestapp.data.api.entity.AnswerEntity
 import com.example.xmtestapp.data.db.repository.QuestionRepositoryLocal
 import com.example.xmtestapp.data.db.repository.QuestionRepositoryRemote
+import com.example.xmtestapp.domain.entity.Answer
 import javax.inject.Inject
 
 class SubmitAnswerUseCase @Inject constructor(
@@ -11,8 +12,8 @@ class SubmitAnswerUseCase @Inject constructor(
 ) {
 
     suspend fun submitAnswer(id: Int, answer: String): Boolean {
-        val answerEntity = AnswerEntity(id, answer)
-        val isSuccess = questionRepositoryRemote.submitAnswer(answerEntity)
+        val answerObject = Answer(id, answer)
+        val isSuccess = questionRepositoryRemote.submitAnswer(answerObject)
 
         if (isSuccess) {
             questionRepositoryLocal.updateAnswer(id, answer)
