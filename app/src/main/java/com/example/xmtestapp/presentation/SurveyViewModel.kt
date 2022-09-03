@@ -4,7 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xmtestapp.data.api.entity.QuestionEntity
-import com.example.xmtestapp.domain.SurveyUseCase
+import com.example.xmtestapp.domain.GetQuestionsUseCase
+import com.example.xmtestapp.domain.SubmitAnswerUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +19,8 @@ enum class SubmitAnswerState {
 
 @HiltViewModel
 class SurveyViewModel @Inject constructor(
-    private val surveyUseCase: SurveyUseCase,
+    private val getQuestionsUseCase: GetQuestionsUseCase,
+    private val submitAnswerUseCase: SubmitAnswerUseCase
 ) : ViewModel() {
 
     val questionsLiveData = MutableLiveData<List<QuestionEntity>>()
@@ -27,9 +29,9 @@ class SurveyViewModel @Inject constructor(
 
     var totalQuestions: Int = 0
 
-    fun refreshQuestions() {
+    fun populateQuestions() {
         viewModelScope.launch(Dispatchers.IO) {
-            val questions = surveyUseCase.getQuestionsFromRepo()
+            val questions = getQuestionsUseCase.getQuestionsFromRepo()
             totalQuestions = questions.size
             questionsLiveData.postValue(questions)
         }
@@ -38,10 +40,10 @@ class SurveyViewModel @Inject constructor(
     fun submitAnswer(id: Int, answer: String){
         loadingLiveData.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
-            val success = surveyUseCase.submitAnswer(id, answer)
+            val success = submitAnswerUseCase.submitAnswer(id, answer)
 
             if (success) {
-                refreshQuestions()
+                populateQuestions()
                 submitAnswerStateLiveData.postValue(SubmitAnswerState.STATE_SUCCESS)
             } else {
                 submitAnswerStateLiveData.postValue(SubmitAnswerState.STATE_ERROR)

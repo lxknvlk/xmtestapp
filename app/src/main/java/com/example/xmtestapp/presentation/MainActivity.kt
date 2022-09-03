@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity() {
             piLoader.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
         }
 
-        viewModel.questionsLiveData.observe(this) { questionsList ->
-            if (questionsList != null) {
+        viewModel.questionsLiveData.observe(this) { isSuccess ->
+            if (isSuccess) {
                 btnStart.isEnabled = true
                 showSuccess(getString(R.string.questions_loaded))
             } else {
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.fetchQuestions()
+        viewModel.downloadQuestions()
     }
 
     private fun showError(msg: String) {

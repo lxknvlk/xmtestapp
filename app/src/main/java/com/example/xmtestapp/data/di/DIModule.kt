@@ -6,8 +6,11 @@ import com.example.xmtestapp.data.api.ApiClient
 import com.example.xmtestapp.data.api.ApiInterface
 import com.example.xmtestapp.data.api.RetrofitClient
 import com.example.xmtestapp.data.db.AppDatabase
-import com.example.xmtestapp.data.db.repository.QuestionRepository
-import com.example.xmtestapp.domain.SurveyUseCase
+import com.example.xmtestapp.data.db.repository.QuestionRepositoryLocal
+import com.example.xmtestapp.data.db.repository.QuestionRepositoryRemote
+import com.example.xmtestapp.domain.DownloadQuestionsUseCase
+import com.example.xmtestapp.domain.GetQuestionsUseCase
+import com.example.xmtestapp.domain.SubmitAnswerUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,9 +37,15 @@ class DiModule {
     }
 
     @Provides
-    fun provideQuestionRepository(appDatabase: AppDatabase): QuestionRepository {
-        return QuestionRepository(appDatabase.questionDao())
+    fun provideQuestionRepositoryLocal(appDatabase: AppDatabase): QuestionRepositoryLocal {
+        return QuestionRepositoryLocal(appDatabase.questionDao())
     }
+
+    @Provides
+    fun provideQuestionRepositoryRemote(apiClient: ApiClient): QuestionRepositoryRemote {
+        return QuestionRepositoryRemote(apiClient)
+    }
+
 
     @Provides
     fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase {
@@ -48,9 +57,24 @@ class DiModule {
 
     @Provides
     fun provideGetQuestionsUseCase(
-        apiClient: ApiClient,
-        questionRepository: QuestionRepository
-    ): SurveyUseCase {
-        return SurveyUseCase(apiClient, questionRepository)
+        questionRepositoryLocal: QuestionRepositoryLocal
+    ): GetQuestionsUseCase {
+        return GetQuestionsUseCase(questionRepositoryLocal)
+    }
+
+    @Provides
+    fun provideSubmitAnswerUseCase(
+        questionRepositoryLocal: QuestionRepositoryLocal,
+        questionRepositoryRemote: QuestionRepositoryRemote
+    ): SubmitAnswerUseCase {
+        return SubmitAnswerUseCase(questionRepositoryLocal, questionRepositoryRemote)
+    }
+
+    @Provides
+    fun provideDownloadQuestionsUseCase(
+        questionRepositoryLocal: QuestionRepositoryLocal,
+        questionRepositoryRemote: QuestionRepositoryRemote
+    ): DownloadQuestionsUseCase {
+        return DownloadQuestionsUseCase(questionRepositoryLocal, questionRepositoryRemote)
     }
 }

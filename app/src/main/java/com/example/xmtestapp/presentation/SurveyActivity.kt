@@ -53,7 +53,7 @@ class SurveyActivity : AppCompatActivity() {
 
         initObservers()
 
-        viewModel.refreshQuestions()
+        viewModel.populateQuestions()
     }
 
     private fun initObservers() {

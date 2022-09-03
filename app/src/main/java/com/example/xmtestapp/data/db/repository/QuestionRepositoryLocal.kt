@@ -4,7 +4,7 @@ import com.example.xmtestapp.data.db.dao.QuestionDAO
 import com.example.xmtestapp.data.api.entity.QuestionEntity
 import javax.inject.Inject
 
-class QuestionRepository @Inject constructor(
+class QuestionRepositoryLocal @Inject constructor(
     private val questionDAO: QuestionDAO
 ) {
     fun getAll(): List<QuestionEntity> {
