@@ -6,11 +6,17 @@ import com.example.xmtestapp.data.api.ApiClient
 import com.example.xmtestapp.data.api.ApiInterface
 import com.example.xmtestapp.data.api.RetrofitClient
 import com.example.xmtestapp.data.db.AppDatabase
-import com.example.xmtestapp.data.db.repository.QuestionRepositoryLocal
-import com.example.xmtestapp.data.db.repository.QuestionRepositoryRemote
-import com.example.xmtestapp.domain.usecase.DownloadQuestionsUseCase
-import com.example.xmtestapp.domain.usecase.GetQuestionsUseCase
-import com.example.xmtestapp.domain.usecase.SubmitAnswerUseCase
+import com.example.xmtestapp.data.db.dao.QuestionDAO
+import com.example.xmtestapp.data.db.repository.QuestionRepositoryLocalImpl
+import com.example.xmtestapp.data.db.repository.QuestionRepositoryRemoteImpl
+import com.example.xmtestapp.data.interfaces.QuestionRepositoryLocal
+import com.example.xmtestapp.data.interfaces.QuestionRepositoryRemote
+import com.example.xmtestapp.domain.interfaces.DownloadQuestionsUseCase
+import com.example.xmtestapp.domain.interfaces.GetQuestionsUseCase
+import com.example.xmtestapp.domain.interfaces.SubmitAnswerUseCase
+import com.example.xmtestapp.domain.usecase.DownloadQuestionsUseCaseImpl
+import com.example.xmtestapp.domain.usecase.GetQuestionsUseCaseImpl
+import com.example.xmtestapp.domain.usecase.SubmitAnswerUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,13 +43,18 @@ class DiModule {
     }
 
     @Provides
-    fun provideQuestionRepositoryLocal(appDatabase: AppDatabase): QuestionRepositoryLocal {
-        return QuestionRepositoryLocal(appDatabase.questionDao())
+    fun provideQuestionDao(appDatabase: AppDatabase): QuestionDAO {
+        return appDatabase.questionDao()
+    }
+
+    @Provides
+    fun provideQuestionRepositoryLocal(questionDAO: QuestionDAO): QuestionRepositoryLocal {
+        return QuestionRepositoryLocalImpl(questionDAO)
     }
 
     @Provides
     fun provideQuestionRepositoryRemote(apiClient: ApiClient): QuestionRepositoryRemote {
-        return QuestionRepositoryRemote(apiClient)
+        return QuestionRepositoryRemoteImpl(apiClient)
     }
 
 
@@ -57,24 +68,24 @@ class DiModule {
 
     @Provides
     fun provideGetQuestionsUseCase(
-        questionRepositoryLocal: QuestionRepositoryLocal
+        questionRepositoryLocal: QuestionRepositoryLocalImpl
     ): GetQuestionsUseCase {
-        return GetQuestionsUseCase(questionRepositoryLocal)
+        return GetQuestionsUseCaseImpl(questionRepositoryLocal)
     }
 
     @Provides
     fun provideSubmitAnswerUseCase(
-        questionRepositoryLocal: QuestionRepositoryLocal,
-        questionRepositoryRemote: QuestionRepositoryRemote
+        questionRepositoryLocal: QuestionRepositoryLocalImpl,
+        questionRepositoryRemote: QuestionRepositoryRemoteImpl
     ): SubmitAnswerUseCase {
-        return SubmitAnswerUseCase(questionRepositoryLocal, questionRepositoryRemote)
+        return SubmitAnswerUseCaseImpl(questionRepositoryLocal, questionRepositoryRemote)
     }
 
     @Provides
     fun provideDownloadQuestionsUseCase(
-        questionRepositoryLocal: QuestionRepositoryLocal,
-        questionRepositoryRemote: QuestionRepositoryRemote
+        questionRepositoryLocal: QuestionRepositoryLocalImpl,
+        questionRepositoryRemote: QuestionRepositoryRemoteImpl
     ): DownloadQuestionsUseCase {
-        return DownloadQuestionsUseCase(questionRepositoryLocal, questionRepositoryRemote)
+        return DownloadQuestionsUseCaseImpl(questionRepositoryLocal, questionRepositoryRemote)
     }
 }
