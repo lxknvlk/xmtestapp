@@ -7,6 +7,7 @@ import com.example.xmtestapp.domain.entity.Question
 import com.example.xmtestapp.domain.interfaces.GetQuestionsUseCase
 import com.example.xmtestapp.domain.interfaces.SubmitAnswerUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +21,8 @@ enum class SubmitAnswerState {
 @HiltViewModel
 class SurveyViewModel @Inject constructor(
     private val getQuestionsUseCase: GetQuestionsUseCase,
-    private val submitAnswerUseCase: SubmitAnswerUseCase
+    private val submitAnswerUseCase: SubmitAnswerUseCase,
+    private val coroutineDispatcherIO: CoroutineDispatcher
 ) : ViewModel() {
 
     val questionsLiveData = MutableLiveData<List<Question>>()
@@ -30,7 +32,7 @@ class SurveyViewModel @Inject constructor(
     var totalQuestions: Int = 0
 
     fun populateQuestions() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(coroutineDispatcherIO) {
             val questions = getQuestionsUseCase.getQuestionsFromRepo()
             totalQuestions = questions.size
             questionsLiveData.postValue(questions)
@@ -39,7 +41,7 @@ class SurveyViewModel @Inject constructor(
 
     fun submitAnswer(id: Int, answer: String) {
         loadingLiveData.postValue(true)
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(coroutineDispatcherIO) {
             val success = submitAnswerUseCase.submitAnswer(id, answer)
 
             if (success) {
