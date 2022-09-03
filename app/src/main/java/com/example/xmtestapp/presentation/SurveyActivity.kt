@@ -1,4 +1,4 @@
-package com.example.xmtestapp.view
+package com.example.xmtestapp.presentation
 
 import android.os.Bundle
 import android.view.Menu
@@ -12,9 +12,9 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.xmtestapp.R
 import com.example.xmtestapp.data.api.entity.QuestionEntity
-import com.example.xmtestapp.view.adapter.QuestionPagerAdapter
-import com.example.xmtestapp.view.adapter.nextPage
-import com.example.xmtestapp.view.adapter.previousPage
+import com.example.xmtestapp.presentation.adapter.QuestionPagerAdapter
+import com.example.xmtestapp.presentation.adapter.nextPage
+import com.example.xmtestapp.presentation.adapter.previousPage
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint

@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:id="@+id/llRoot"
     android:gravity="center_horizontal"
-    tools:context=".view.MainActivity">
+    tools:context=".presentation.MainActivity">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:layout_width="match_parent"

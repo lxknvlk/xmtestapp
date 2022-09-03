@@ -1,4 +1,4 @@
-package com.example.xmtestapp.view
+package com.example.xmtestapp.presentation
 
 import android.os.Bundle
 import android.text.Editable

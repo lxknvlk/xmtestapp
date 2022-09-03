@@ -1,4 +1,4 @@
-package com.example.xmtestapp.view
+package com.example.xmtestapp.presentation
 
 import android.content.Intent
 import android.os.Bundle

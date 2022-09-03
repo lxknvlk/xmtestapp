@@ -7,7 +7,7 @@ import com.example.xmtestapp.data.api.ApiInterface
 import com.example.xmtestapp.data.api.RetrofitClient
 import com.example.xmtestapp.data.db.AppDatabase
 import com.example.xmtestapp.data.db.repository.QuestionRepository
-import com.example.xmtestapp.logic.SurveyUseCase
+import com.example.xmtestapp.domain.SurveyUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.example.xmtestapp.view.adapter
+package com.example.xmtestapp.presentation.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.xmtestapp.data.api.entity.QuestionEntity

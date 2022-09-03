@@ -1,4 +1,4 @@
-package com.example.xmtestapp.view.adapter
+package com.example.xmtestapp.presentation.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.adapter.FragmentViewHolder
 import androidx.viewpager2.widget.ViewPager2
 import com.example.xmtestapp.data.api.entity.QuestionEntity
-import com.example.xmtestapp.view.QuestionFragment
+import com.example.xmtestapp.presentation.QuestionFragment
 
 class QuestionPagerAdapter(
     private val fragmentActivity: FragmentActivity,

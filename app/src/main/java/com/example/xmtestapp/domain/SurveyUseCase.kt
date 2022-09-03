@@ -1,4 +1,4 @@
-package com.example.xmtestapp.logic
+package com.example.xmtestapp.domain
 
 import com.example.xmtestapp.data.api.ApiClient
 import com.example.xmtestapp.data.api.entity.AnswerEntity
